@@ -17,19 +17,6 @@ Set Implicit Arguments.
 Unset Strict Implicit.
 Unset Printing Implicit Defensive.
 
-Section complements.
-
-Lemma seq2_ind (T1 T2 : Type) (P : seq T1 -> seq T2 -> Prop) : P [::] [::] ->
- (forall x1 x2 s1 s2, P s1 s2 -> P (x1 :: s1) (x2 :: s2)) ->
-  forall s1 s2, size s1 = size s2 -> P s1 s2.
-Proof.
-move=> HP IHP.
-elim=> [|x1 l1 IH1]; case=> // x2 l2 /= Hs.
-apply: IHP; apply: IH1.
-by move/eqnP: Hs=> /= /eqnP.
-Qed.
-End complements.
-
 (****************************************************************************)
 (****************************************************************************)
 (************ left pseudo division, it is complement of polydiv. ************)
@@ -300,7 +287,7 @@ case=>[|a l1]; case=> //=.
 move=> b l2 /eqP; rewrite eqSS=> /eqP Hsl F1 F2 Hl.
 have Hab: similar (F1 a 0%N) (F2 b 0%N) by exact: (Hl 0%N).
 move: l1 l2 Hsl a b F1 F2 Hab Hl.
-apply: seq2_ind=> //= x1 x2 l1 l2 IH a b F1 F2 Hab H.
+apply: seq_ind2=> //= x1 x2 l1 l2 _ IH a b F1 F2 Hab H.
 apply: (similar_dgblockmx Hab).
 apply: IH=>[|i]; first exact: (H 1%N).
 exact: (H i.+1).
@@ -430,7 +417,7 @@ case=>[|a l1]; case=> //=.
 move=> b l2 /eqP; rewrite eqSS=> /eqP Hsl F1 F2 Hl.
 have Hab: equivalent (F1 a 0%N) (F2 b 0%N) by exact: (Hl 0%N).
 move: l1 l2 Hsl a b F1 F2 Hab Hl.
-apply: seq2_ind=> //= x1 x2 l1 l2 IH a b F1 F2 Hab H.
+apply: seq_ind2=> //= x1 x2 l1 l2 _ IH a b F1 F2 Hab H.
 apply: (equiv_dgblockmx Hab).
 apply: IH=>[|i]; first exact: (H 1%N).
 exact: (H i.+1).
@@ -565,7 +552,7 @@ move: Hs n m.
 pose P := (fun (s1 s2 : seq R) => forall n m,
   (forall i, nth 0 s1 i %= nth 0 s2 i) -> 
   equivalent (diag_mx_seq n.+1 m.+1 s1) (diag_mx_seq n.+1 m.+1 s2)).
-apply: (seq2_ind (P:=P))=> /= [n m _ | x1 x2 s0 s3 IH n m Hi].
+apply: (seq_ind2 (P:=P))=> /= [n m _ | x1 x2 s0 s3 _ IH n m Hi].
   by rewrite !diag_mx_seq_nil; apply: equiv_refl.
 rewrite /P !diag_mx_seq_cons.
 have IHi: (forall i : nat, s0`_i %= s3`_i).

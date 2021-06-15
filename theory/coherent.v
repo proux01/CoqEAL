@@ -362,10 +362,10 @@ Qed.
 End ker_col.
 
 Lemma kerE (R : coherentRingType) m n (M : 'M[R]_(m, n)) :
-   ker M = castmx (congr1 _ (col_0mx _), erefl) (0.-ker M).
+   ker M = castmx (congr1 _ (col_flat_mx 0 _), erefl) (0.-ker M).
 Proof.
-rewrite /(0.-ker) -(esymK (col_0mx _)).
-case: _ / (esym (col_0mx _)); rewrite castmx_id.
+rewrite /(0.-ker) -(esymK (col_flat_mx 0 _)).
+case: _ / (esym (col_flat_mx 0 _)); rewrite castmx_id.
 by apply/matrixP => i j; rewrite mxE /=; congr (ker M _ _); apply: val_inj.
 Qed.
 
