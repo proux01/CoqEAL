@@ -11,6 +11,6 @@
 *.o
 *.native
 *.aux
-Makefile.coq
-Makefile.coq.conf
+Makefile.rocq
+Makefile.rocq.conf
 *~
